@@ -10,6 +10,7 @@
         <form action="{{ route('prescriptions.store') }}" method="POST">
             @csrf
             <input type="hidden" name="patient_id" value="{{ Auth::user()->id }}">
+            
             <div>
                 <label for="medication_name">Medication Name:</label>
                 <input type="text" id="medication_name" name="medication_name" required>
@@ -43,8 +44,13 @@
                 <td>{{ $prescription->dosage }}</td>
                 <td>{{ $prescription->frequency }}</td>
                 <td>
-                    <a href="{{ route('prescriptions.edit', $prescription) }}">Edit</a>
-                    <a href="{{ route('prescriptions.delete', $prescription) }}" onclick="return confirm('Are you sure?')">Delete</a>
+                    <a href="{{ route('prescriptions.edit', $prescription->id) }}">Edit</a>
+                    <form action="{{ route('prescriptions.destroy', $prescription->id) }}" method="POST" style="display: inline;">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" onclick="return confirm('Are you sure you want to delete   
+                 this prescription?')" style="background: none; border: none; color: red; text-decoration: underline;">Delete</button>
+                    </form>
                 </td>
             </tr>
             @empty
