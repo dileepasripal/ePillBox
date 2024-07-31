@@ -14,7 +14,7 @@ class Doctor
             return redirect('/login');
         }
         $user=Auth::user();
-        Log::info($user); // Log user details for debugging
+        //Log::info($user); // Log user details for debugging
         if($user->role==3){
             return $next($request);
         }

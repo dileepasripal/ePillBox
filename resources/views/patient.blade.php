@@ -1,9 +1,63 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container">
-        <h1>Patient Dashboard</h1>
-        <p>This is the content for the patient dashboard.</p>
-        {{-- Add your patient-specific content here --}}
-    </div>
+<div class="container">
+    <h2>My Prescriptions</h2>
+
+    {{-- Add Prescription Form --}}
+    <section class="add-prescription">
+        <h3>Add New Prescription</h3>
+        <form action="{{ route('prescriptions.store') }}" method="POST">
+            @csrf
+            <input type="hidden" name="patient_id" value="{{ Auth::user()->id }}">
+            <div>
+                <label for="medication_name">Medication Name:</label>
+                <input type="text" id="medication_name" name="medication_name" required>
+            </div>
+            <div>
+                <label for="dosage">Dosage:</label>
+                <input type="text" id="dosage" name="dosage" required>
+            </div>
+            <div>
+                <label for="frequency">Frequency:</label>
+                <input type="text" id="frequency" name="frequency" required>
+            </div>
+            {{-- Add more input fields for start/end dates, instructions, doctor's name, and prescription image as needed --}}
+            <button type="submit">Add Prescription</button>
+        </form>
+    </section>
+    {{-- Existing prescriptions table code below--}}
+    <table>
+        <thead>
+            <tr>
+                <th>Medication</th>
+                <th>Dosage</th>
+                <th>Frequency</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @forelse ($prescriptions as $prescription) 
+            <tr>
+                <td>{{ $prescription->medication_name }}</td>
+                <td>{{ $prescription->dosage }}</td>
+                <td>{{ $prescription->frequency }}</td>
+                <td>
+                    <a href="{{ route('prescriptions.edit', $prescription) }}">Edit</a>
+                    <a href="{{ route('prescriptions.delete', $prescription) }}" onclick="return confirm('Are you sure?')">Delete</a>
+                </td>
+            </tr>
+            @empty
+            <tr>
+                <td colspan="4">You have no prescriptions yet.</td>
+            </tr>
+            @endforelse
+        </tbody>
+    </table>
+</div>
 @endsection
+
+
+    
+
+

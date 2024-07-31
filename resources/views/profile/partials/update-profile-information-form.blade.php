@@ -9,14 +9,23 @@
         </p>
     </header>
 
-    <form id="send-verification" method="post" action="{{ route('verification.send') }}">
-        @csrf
-    </form>
-
     <form method="post" action="{{ route('profile.update') }}" class="mt-6 space-y-6">
         @csrf
         @method('patch')
+        
+        {{-- ... Name and Email Input Fields ... --}}
 
+        <div>
+            <x-input-label for="role" :value="__('Role')" />
+            <select id="role" name="role" class="mt-1 block w-full" required autofocus>
+            {{--<option value="1" {{ old('role', $user->role) == 1 ? 'selected' : '' }}>Admin</option>--}}
+                <option value="2" {{ old('role', $user->role) == 2 ? 'selected' : '' }}>Patient</option>
+                <option value="3" {{ old('role', $user->role) == 3 ? 'selected' : '' }}>Doctor</option>
+                <option value="4" {{ old('role', $user->role) == 4 ? 'selected' : '' }}>Pharmacist</option>
+            </select>
+            <x-input-error class="mt-2" :messages="$errors->get('role')" />
+        </div>
+        
         <div>
             <x-input-label for="name" :value="__('Name')" />
             <x-text-input id="name" name="name" type="text" class="mt-1 block w-full" :value="old('name', $user->name)" required autofocus autocomplete="name" />
